@@ -1,0 +1,50 @@
+/* query 1 */
+
+SELECT a.id,a.name as accounts_name, r.name as region_name,
+sum(o.total_amt_usd) as total_amt_sum
+FROM accounts a
+JOIN sales_reps s
+on s.id = a.sales_rep_id
+JOIN region r
+on r.id = s.region_id
+JOIN orders o
+on a.id = o.account_id
+group by a.name,r.name,a.id
+order by total_amt_sum desc;
+
+///////////////////////////
+/* query 2 */
+
+
+select w.channel, count(*) as channel_used
+from accounts a
+join web_events w
+on a.id = w.account_id
+group by w.channel
+order by channel_used desc;
+
+/////////////////////////
+/* query 3 */
+
+
+select a.name, avg(o.standard_qty) as avg_standard
+from orders o
+join accounts a
+on a.id = o.account_id
+group by a.name
+order by avg_standard desc;
+
+///////////////////////
+/* query 4 */
+
+
+SELECT a.id, a.name, COUNT(*) num_orders,
+sum(standard_qty) as stand_total,
+sum(poster_qty) as poster_total,
+sum(gloss_qty) as gloss_total,
+sum(o.total) as total_orders
+FROM accounts a
+JOIN orders o
+ON a.id = o.account_id
+GROUP BY a.id, a.name
+ORDER BY num_orders desc;
